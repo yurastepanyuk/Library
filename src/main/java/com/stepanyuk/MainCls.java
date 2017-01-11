@@ -8,7 +8,7 @@ public class MainCls {
     public static void main(String[] args) {
 
         AuthorEntity dcdc = new AuthorEntity();
-        int i = 0;
+        int ivt = 0;
 
     }
 
