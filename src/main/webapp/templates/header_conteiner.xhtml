@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <h:outputStylesheet library="css" name="style_main.css"></h:outputStylesheet>
+    <h:outputScript library="js" name="library.js" target="head"></h:outputScript>
+</h:head>
+
+<h:body>
+
+</h:body>
+
+<ui:composition>
+
+    <div>
+        <div class="logo">
+            <h:graphicImage library="images" name="lib_logo.jpg"></h:graphicImage>
+        </div>
+
+        <div class="welcome">
+
+            <!--<div class="menu">-->
+
+                <h:form>
+                    <ul>
+                        <li><a href="#">#{msg.news}</a></li>
+
+                        <li>
+                            <p:commandLink actionListener="#{bookListController.fillBooksByRate}"
+                                           value="#{msg.popular}"
+                                           update=":booksForm:booksList @form :lettersForm :pages2 :booksCount">
+                            </p:commandLink>
+                        </li>
+                        <li><p:commandLink type="button" onclick="PF('dlgAbout').show()" value="#{msg.about}" global="false"/></li>
+                        <li><a href="#">#{msg.contacts}</a></li>
+                        <li><a href="#">#{msg.team}</a></li>
+                    </ul>
+                </h:form>
+
+
+            <!--</div>-->
+
+
+            <a class="feedback" href="mailto:yu.stepanyuk.ra@gmail.com">#{msg.feedback}</a>
+
+            <!--<h:form>-->
+                <!--<p>-->
+                <!--<h:commandLink  action="#{localeChanger.changeLocale('en_EN')}">-->
+                    <!--<h:graphicImage library="images" name="eng.png" title="#{msg.language_english}"></h:graphicImage>-->
+                <!--</h:commandLink>-->
+
+                <!--<h:commandLink action="#{localeChanger.changeLocale('ru_RU')}">-->
+                    <!--<h:graphicImage library="images" name="rus.png" title="#{msg.language_russian}"></h:graphicImage>-->
+                <!--</h:commandLink>-->
+                <!--</p>-->
+            <!--</h:form>-->
+
+            <!--<b>#{msg.welcome_welcome}#{user.username}</b>-->
+            <!--&lt;!&ndash;<h5>#{msg.exit}</h5>&ndash;&gt;-->
+            <!--<h:form>-->
+                <!--<h:commandLink value="#{msg.exit}" action="#{loginController.logoff()}"></h:commandLink>-->
+            <!--</h:form>-->
+        </div>
+    </div>
+
+    <div id="search_form" class="search_div">
+
+        <h:form styleClass="search_form">
+            <h:graphicImage library="images" name="search.jpg" styleClass="search_image"></h:graphicImage>
+            <div class="input_field">
+            <p:inputText id="search_string" styleClass="search_string" value="#{bookListController.searchString}" valueChangeListener="#{bookListController.searchStringChanged}">
+                <p:ajax  event="change" global="false"/>
+            </p:inputText>
+            </div>
+
+            <div class="dropdown">
+            <h:selectOneMenu value="#{bookListController.searchType}" styleClass="search_menu" valueChangeListener="#{bookListController.searchTypeChanged}">
+                <f:selectItems value="#{searchTypeController.searchList}" />
+                <p:ajax event="change" global="false"/>
+            </h:selectOneMenu>
+            </div>
+
+            <h:commandLink styleClass="forfunktion" value="">
+                <f:ajax onevent="showProgress" event="click" render=":booksForm:booksList" listener="#{bookListController.fillBooksBySearch}"></f:ajax>
+            </h:commandLink>
+
+            <p:commandButton  value="#{msg.search_button}" styleClass="search_button" actionListener="#{bookListController.fillBooksBySearch}" >
+                 <f:ajax onevent="showProgress" event="click" render=":booksForm:booksList :list_of_categories :lettersForm :pages2 :booksCount"></f:ajax>
+            </p:commandButton>
+
+            <script type="text/javascript">
+                document.getElementById("search_string").setAttribute("placeholder","#{msg.search_book}");
+            </script>
+
+        </h:form>
+
+    </div>
+
+    <div class="letters">
+
+        <h:form id="lettersForm">
+
+            <ul>
+            <ui:repeat value="#{bookListController.letterListChar}" var="lettervar">
+                <li>
+                <h:commandLink styleClass="forfunktion" value="">
+                    <f:ajax onevent="showProgress" event="click" render=":booksForm:booksList @form :booksForm:list_of_categories :lettersForm :pages2 :booksCount" listener="#{bookListController.fillBooksByLetter}"></f:ajax>
+                </h:commandLink>
+
+                <p:commandLink actionListener="#{bookListController.fillBooksByLetter}" update=":booksForm:booksList @form :list_of_categories :lettersForm :pages2 :booksCount" styleClass="#{lettervar == bookListController.selectedLetter?'selected_letter':''}">
+                    <h:outputText value="#{lettervar}"></h:outputText>
+                    <f:param name="letter_search" value="#{lettervar}"></f:param>
+                </p:commandLink>
+                </li>
+            </ui:repeat>
+            </ul>
+
+        </h:form>
+
+    </div>
+
+</ui:composition>
+<!--<f:view>-->
+    <!--<h:outputLabel value="Hello, world"/>-->
+<!--</f:view>-->
+</html>

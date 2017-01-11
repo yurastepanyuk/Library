@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="connection.url">jdbc:mysql://localhost:3306/library</property>
+    <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.connection.datasource">jdbc/__default</property><!--DerbyPool-->
+    <!--<property name="connection.username">root</property>-->
+    <property name="connection.username">sa</property>
+    <!--<property name="connection.password">afynbr</property>-->
+    <property name="connection.password">sasa</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="connection.autocommit">true</property>
+    <property name="hbm2ddl.auto">update</property>
+    <property name="hibernate.enable_lazy_load_no_trans">true</property>
+
+    <mapping class="com.stepanyuk.entity.AuthorEntity"/>
+    <mapping class="com.stepanyuk.entity.BookEntity"/>
+    <mapping class="com.stepanyuk.entity.GenreEntity"/>
+    <mapping class="com.stepanyuk.entity.GroupsEntity"/>
+    <mapping class="com.stepanyuk.entity.PublisherEntity"/>
+    <mapping class="com.stepanyuk.entity.UsersEntity"/>
+    <mapping class="com.stepanyuk.entity.VoteEntity"/>
+
+  </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+    http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <application>
+        <locale-config>
+            <default-locale>en_EN</default-locale>
+            <supported-locale>ru_RU</supported-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>nls.messagess</base-name>  <!--путь к файлу -->
+            <var>msg</var> <!--Переменная к которй будем обращаться-->
+        </resource-bundle>
+    </application>
+
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>books</from-outcome>
+            <to-view-id>/pages/books.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/pages/books.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>exit</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>books</from-outcome>
+            <to-view-id>/pages/books.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/pages/content.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>books</from-outcome>
+            <to-view-id>/pages/books.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+
+    <!--<managed-bean eager="true">-->
+        <!--<managed-bean-name>localeChanger</managed-bean-name>-->
+        <!--<managed-bean-class>com.stepanyuk.beans.LocaleChanger</managed-bean-class>-->
+        <!--<managed-bean-scope>session</managed-bean-scope>-->
+
+    <!--</managed-bean>-->
+
+</faces-config>

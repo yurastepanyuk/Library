@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xml:lang="en" lang="en">
+
+<f:view locale="#{localeChanger.curLocale}">
+<h:head>
+    <title><ui:insert name="title"></ui:insert></title>
+    <h:outputStylesheet library="css" name="style_main.css"></h:outputStylesheet>
+    <h:outputScript library="js" name="library.js" target="head"></h:outputScript>
+</h:head>
+
+<h:body>
+
+    <p:ajaxStatus id="ajaxStatusPanel">
+        <f:facet name="start">
+            <div id="loading_wrapper">
+                <h:graphicImage library="images" name="loading.gif" styleClass="loading"></h:graphicImage>
+            </div>
+        </f:facet>
+
+        <f:facet name="complete">
+            <!--<h:outputText value="" />-->
+        </f:facet>
+    </p:ajaxStatus>
+
+    <!--<div id="loading_wrapper">-->
+        <!--&lt;!&ndash;<p>#{msg.loading}...</p>&ndash;&gt;-->
+        <!--<h:graphicImage library="images" name="loading.gif" styleClass="loading"></h:graphicImage>-->
+    <!--</div>-->
+
+    <div class="header">
+
+        <ui:include src="/templates/header.xhtml"/>
+    </div>
+
+    <div class="conteiner">
+
+        <div class="header_conteiner">
+            <ui:insert name="header">
+                <ui:include src="/templates/header_conteiner.xhtml"></ui:include>
+            </ui:insert>
+        </div>
+
+        <div class="middle">
+
+            <div class="categories">
+                <ui:insert name="categories">
+                    <ui:include src="/templates/left_menu.xhtml"></ui:include>
+                </ui:insert>
+            </div>
+
+            <div class="content">
+
+                <p><strong><ui:insert name="books_count"/></strong></p>
+
+                <!--<div class="pager">-->
+                    <!--<ui:insert name="paginator"/>-->
+                <!--</div>-->
+
+                <ui:insert name="content">
+                    <ui:include src="/templates/content.xhtml"></ui:include>
+                </ui:insert>
+
+                <div class="pager">
+                    <h:panelGroup id="pages2"><ui:insert name="paginator"/></h:panelGroup>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <ui:insert name="footer">
+                <ui:include src="/templates/footer.xhtml"></ui:include>
+            </ui:insert>
+        </div>
+
+    </div>
+
+</h:body>
+
+</f:view>
+
+</html>

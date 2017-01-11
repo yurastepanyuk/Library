@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Title</title>
+</h:head>
+<h:body>
+
+<p:dialog id="editDialog" modal="true" widgetVar="dlgEditBook" dynamic="true" resizable="false" header="#{msg.edit_book}" >
+
+    <h:form id="formEditBook">
+
+        <p:panelGrid columns="2" columnClasses="col1, col2" styleClass="edit_book_table" >
+
+            <p:panel id="imagePanel">
+
+                <p:graphicImage  value="#{imageController.defaultImage}" width="110" height="150" id="bookImage"/>
+                <h:form enctype="multipart/form-data" id="formUpload">
+                    <p:fileUpload id="imageUpload" label="#{msg.load}" fileUploadListener="#{imageController.handleFileUpload}" update="bookNewImage messages" sizeLimit="#{imageController.imageMaxSize}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" multiple="false" auto="true"/>
+                    <p:graphicImage value="#{imageController.uploadedImage}" library="images" width="110" height="150" id="bookNewImage"/>
+                    <p:messages id="messages" showDetail="true"/>
+                </h:form>
+
+            </p:panel>
+
+            <p:panel>
+
+                <p:panelGrid id="bookDetails" columns="2" >
+
+                    <p:outputLabel value="#{msg.book_name}:" styleClass="edit-title"/>
+                    <p:inputText id="inputBookName"
+                                 value="#{bookListController.selectedBook.name}"
+                                 size="60"
+                                 required="true"
+                                 requiredMessage="#{msg.required_field}">
+                        <p:ajax event="change"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="#{msg.author_name}:" styleClass="edit-title"/>
+                    <p:selectOneMenu value="#{bookListController.selectedBook.author}" converter="#{authorController}"
+                                     onchange=""
+                                     valueChangeListener="#{bookListController.handleChangeAuthorBook}">
+                        <p:ajax event="change"/>
+                        <f:selectItems value="${authorController.selectItems}" var="curaut" itemLabel="authorLabel"
+                                       itemValue="authorValue"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="#{msg.book_genre}:" styleClass="edit-title"/>
+                    <p:selectOneMenu value="#{bookListController.selectedBook.genre}"
+                                     converter="#{genreController}"
+                                     onchange=""
+                                     valueChangeListener="#{bookListController.handleChangeGenreBook}">
+                        <p:ajax event="change"/>
+                        <f:selectItems value="${genreController.selectItems}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="#{msg.publisher}:" styleClass="edit-title"/>
+                    <p:selectOneMenu value="#{bookListController.selectedBook.publisher}"
+                                     converter="#{publisherController}"
+                                     onchange=""
+                                     valueChangeListener="#{bookListController.handleChangePublisherBook}">
+                        <p:ajax event="change"/>
+                        <f:selectItems value="${publisherController.selectItems}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="#{msg.publish_year}:" styleClass="edit-title"/>
+                    <p:calendar value="#{bookListController.selectedBook.publishYearFormatted}" showOn="button">
+                        <p:ajax event="dateSelect" listener="#{bookListController.handleChangeDataBook}"></p:ajax>
+                    </p:calendar>
+
+                    <p:outputLabel value="#{msg.isbn}:" styleClass="edit-title"/>
+                    <p:inputText id="inputIsbn" value="#{bookListController.selectedBook.isbn}" required="true">
+                        <p:ajax event="change"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="#{msg.page_count}:" styleClass="edit-title" required="true"/>
+                    <p:inputText id="inputPageCount" value="#{bookListController.selectedBook.pageCount}"
+                                 required="true">
+                        <p:ajax event="change"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="#{msg.text}:" styleClass="edit-title"/>
+                    <h:outputLink value="#{request.contextPath}/PdfContent"  target="_blank" styleClass="pdf-link">
+                        <p:outputLabel value="#{msg.show_pdf}"/>
+                        <f:param name="id" value="#{bookListController.selectedBook.id}"/>
+                    </h:outputLink>
+
+                    <p:outputLabel/>
+
+                    <h:form enctype="multipart/form-data" id="formUploadPdf">
+
+                        <p:fileUpload  id="pdfUpload" label="#{msg.load_pdf}" fileUploadListener="#{contentController.handleFileUpload}" update="messages-pdf @form" allowTypes="/(\.|\/)(pdf)$/" multiple="false" auto="true" styleClass="pdf-upload"/>
+                        <h:outputLink id="uploadedPdfLink" value="#{request.contextPath}/UploadedPdf"  target="_blank" styleClass="pdf-link" rendered="#{contentController.showContent}">
+                            <p:outputLabel value="#{msg.show_uploaded_pdf}"/>
+                        </h:outputLink>
+                        <p:messages id="messages-pdf" showDetail="true" for="formUploadPdf"/>
+                    </h:form>
+
+                    <p:outputLabel value="#{msg.descr}:" styleClass="edit-title"/>
+                    <p:panel styleClass="descr-text">
+                        <p:inputTextarea id="inputDescr" value="#{bookListController.selectedBook.descr}" cols="60"
+                                         rows="20" maxlength="500" counter="counter"
+                                         counterTemplate="#{msg.letters_left} {0} " autoResize="false">
+                            <p:ajax event="change"/>
+                        </p:inputTextarea>
+                        <h:outputText id="counter"/>
+                    </p:panel>
+
+
+                    <f:facet name="footer">
+                        <p:commandButton  value="#{msg.save}"
+                                         styleClass="button-update" onclick="this.disabled=true;"
+                                         immediate="true"
+                                         update=":booksForm:booksList :booksCount :growlMessage"
+                                         oncomplete="PF('dlgEditBook').hide()"
+                                         icon="ui-icon-check">
+
+                            <f:actionListener binding="#{imageController.saveListener()}"/>
+                            <f:actionListener binding="#{contentController.saveListener()}"/>
+                            <f:actionListener binding="#{bookListController.saveListener()}"/>
+                        </p:commandButton>
+
+
+                        <p:commandButton action="#{bookListController.cancelEditMode()}" value="#{msg.cancel}"
+                                         immediate="true" global="false" oncomplete="PF('dlgEditBook').hide()"
+                                         icon="ui-icon-close"/>
+                    </f:facet>
+
+                </p:panelGrid>
+
+            </p:panel>
+
+        </p:panelGrid>
+
+    </h:form>
+
+</p:dialog>
+
+
+</h:body>
+
+</html>
