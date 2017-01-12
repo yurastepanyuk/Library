@@ -16,6 +16,15 @@ Thum*.db
 .idea/
 target/
 
+hooks/
+info/
+objects/
+objects/
+
+config
+description
+HEAD
+
 /*.*
 !.gitignore
 !.readme
