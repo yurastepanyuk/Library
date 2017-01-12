@@ -14,6 +14,7 @@ Thum*.db
 *.7z
 # Исключаем данные IDEA:
 .idea/
+target/
 
 /*.*
 !.gitignore
